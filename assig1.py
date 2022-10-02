@@ -707,23 +707,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sys
 
-
-'''
-making start the time
-'''
-start = time.time()
-
-
-'''
-entering the file name
-'''
-file_name=input('Enter your filename:')
-
-
-
-
-
-def letter_frequency( filename , letter):
+def letter_frequency(filename,letter):
 
     '''
     Display the count of the letter.
@@ -733,184 +717,117 @@ def letter_frequency( filename , letter):
         #file=open(filename , 'r')
 
     #else:
-
-    file = open( filename , 'r')
-
-    data = file.read()
-
-    counts=data.count(letter)
-
-    file.close()
+    counts = filename.count(letter)
 
     return counts
 
-
-
-def frequency_alphabet(*args):
-
+def frequency_alphabet(filename,*args):
     '''
-    return an array of frequency for the entire alphabet (freqs), the total number of letters in the text (sumoffreq), an array of the letters we want to study(x), an array of relative frequency for the entire alphabet(relative_freq)
+    return an array of frequency for the entire alphabet (freqs), 
+    the total number of letters in the text (sumoffreq), 
+    an array of the letters we want to study(x), 
+    an array of relative frequency for the entire alphabet(relative_freq)
     '''
-
     freqs=np.array([])
-
     sumoffreq=0
 
     for arg in args:
 
-        freqs=np.append(freqs,letter_frequency(file_name,arg))
-
-        sumoffreq+=letter_frequency(file_name,arg)
+        freqs=np.append(freqs,letter_frequency(filename,arg))
+        sumoffreq+=letter_frequency(filename,arg)
 
     relative_freq=freqs/sumoffreq
-
     x=np.array([*args])
 
     return freqs,sumoffreq,x,relative_freq
 
-
-def relative_frequency(*args):
-
+def relative_frequency(filename,*args):
     '''
     prints the relative frequency of each letter in the alphabet
     '''
-
-    relfreq=frequency_alphabet('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')[3]
-
+    relfreq=frequency_alphabet(filename,'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')[3]
     v=0
 
     for arg in args:
-
         print(f'The relative frequency of the letter {arg} is {relfreq[v]}' )
-
         v+=1
 
-    return
-
-
-
-
-
-'''
-printing the relative frequency
-'''
-relative_frequency('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')
-
-
-
-
-
-def hist():
+def hist(filename,graphic_yn):
     '''
     it does an histogram if the user wants to
     '''
-
-    if sys.argv[1]=='yes':##giusto? come lo faccio partire dalla shell di pyzo?
-
-        x=frequency_alphabet('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')[2]
-
-        freqs=frequency_alphabet('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')[3]
-
+    if graphic_yn =='yes':
+        x=frequency_alphabet(filename,'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')[2]
+        freqs=frequency_alphabet(filename,'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')[3]
         plt.bar(x,freqs)
-
-
-
-
-'''
-making the histogram
-'''
-hist()
-
-
-
-
+        
+        
 def count_lines(filename):
-
     '''
     it prints line's number
     '''
-
-    file = open(filename,'r')
-
     line_count = 0
 
-    for line in file:
-
+    for line in filename:
         if line != '\n':
-
             line_count += 1
-
-    file.close()
 
     print(f'The total lines number is {line_count}')
 
-
-
 def count_words(filename):
-
     '''
     it prints words's number
     '''
-
-    file = open(filename,'r')
-
-    read_data = file.read()
-
-    words= read_data.split()
-
+    words= filename.split()
     word_count=len(words )
 
     print(f'The total words number is {word_count}')
 
-
-
-
-def infos(filename):
-
+def infos(filename,info_yn):
     '''
     it prints the optional infos of the text if the user wants to
     '''
-
-    if sys.argv[2]=='yes':
-
-        tot=frequency_alphabet('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')[1]
-
-        print(f'The total characters are {tot}')
-
-        count_lines(filename)
-
-        count_words(filename)
-
-
-
-
-
-'''
-printing some infos if the user wants to
-'''
-infos(file_name)
-
-
-
-plt.show()
-
-
-
+   
+    if info_yn == 'yes':
+      
+      tot=frequency_alphabet(filename,'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')[1]
+      print(f'The total characters are {tot}')
+      
+      count_lines(filename)
+      count_words(filename)
 
 '''We use the if-statement to run blocks of code only if our program is the main program executed.
 '''
 
-def process(file_path): ###a cosa serve e come si fa funzionare
+def process(file_path, graphic, information): ##main
 
     print(f'Opening input file {file_path}...')
 
-    with open(file_path, 'r') as input_file:
+    with open(file_path, 'r') as input_file:##il file lo ho nella variabile input_file e la chiude da sola
+      '''
+      making start the time
+      '''
+      start = time.time()
+      text = input_file.read() ##ha già aperto il file
+      '''
+      printing the relative frequency
+      '''
+      relative_frequency(text,'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')
+      '''
+      making the histogram
+      '''
+      hist(text,graphic)
+      '''
+      printing some infos if the user wants to
+      '''
+      infos(text,information)
+      '''
+      counting how much time we spent
+      '''
+      end = time.time()
+      print(f'The total elapsed time is {end - start}')
+      plt.show()
 
-        text = input_file.read()
-
-    print(text)
-
-    print('Done.')
 
 
 
@@ -919,15 +836,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Print some book statistics')
 
     parser.add_argument('infile', type=str, help='path to the input file')
+    parser.add_argument('graphic', type=str, help='Show graphic[yes/no]')
+    parser.add_argument('infos', type=str, help='Show more infos of the text[yes/no]')
 
     args = parser.parse_args()
 
-    process(args.infile)
+    process(args.infile, args.graphic, args.infos)#tipo il main
+    
 
-'''
-counting how much time we spent
-'''
-
-end = time.time()
-
-print(f'The total elapsed time is {end - start}')
