@@ -705,7 +705,9 @@ import argparse
 import time
 import matplotlib.pyplot as plt
 import numpy as np
+import pathlib
 import sys
+sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
 
 def letter_frequency(filename,letter):
 
