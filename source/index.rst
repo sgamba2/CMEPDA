@@ -51,7 +51,7 @@ will raise an exception.
 
 >>> def get_random_ingredients(kind=None):
 >>> return ["shells", "gorgonzola", "parsley"]
-
+hello
 
 
 you can use the ``frequency_alphabet(filename,*args)`` function:
